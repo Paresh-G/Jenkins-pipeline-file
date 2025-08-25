@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Restore S3 Object from Glacier') {
+            steps {
+                script {
+                    if (params.S3_BUCKET_NAME && params.OBJECT_PATH) {
+                        sh """
+                        aws s3api restore-object \
+                            --bucket ${params.S3_BUCKET_NAME} \
+                            --key ${params.OBJECT_PATH} \
+                            --restore-request '{"Days":2,"GlacierJobParameters":{"Tier":"Standard"}}'
+                        """
+                        echo "✅ Restore request initiated for ${params.OBJECT_PATH} in ${params.S3_BUCKET_NAME}"
+                        echo "⏳ The object will be available to download after 24hrs from the time job is triggered."
+                        echo "📌 The object will be available for 2 days on S3 bucket; post that it will again move to S3 Glacier. ❄️"
+                    } else {
+                        error('❌ Missing required parameters: S3_BUCKET_NAME or OBJECT_PATH')
+                    }
+                }
+            }
+        }
+    }
+}
