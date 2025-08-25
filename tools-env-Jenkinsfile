@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'Java-17'
+        maven 'maven-3.9.11'
+    }
+
+    environment {                            //defining of global env varible
+        myvar_global = 'Welcome'  
+    }
+
+    stages {
+        stage('1st-stage') {
+            environment {                   //defining of stage env varible
+                myvar_stage = 'Hello'  
+            }
+            steps {
+                echo "Hi Paresh"
+                echo myvar_global           //using of global env valiable
+                echo env.myvar_stage        //using of stage env valiable
+            }
+        }
+        stage('2nd-stage') {
+            steps {
+                sh ''' 'date'
+                'w'
+                '''
+            }
+        }
+    }
+}

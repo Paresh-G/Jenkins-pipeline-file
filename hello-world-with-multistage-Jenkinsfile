@@ -1,0 +1,19 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('1st-stage') {
+            steps {
+                echo "hello-word"
+            }
+        }
+        stage('2nd-stage') {
+            steps {
+               sh '''
+                'date'
+                'pwd'
+                '''
+            }
+        }
+    }
+}

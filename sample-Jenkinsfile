@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    tools {
+        jdk 'Java-17'
+        maven 'maven-3.9.11'
+    }
+
+    environment {
+        myvar = 'Welcome'
+    }
+
+    parameters {
+        string(name: 'PERSON_NAME', defaultValue: 'Paresh', description: 'Please Enter the Person Name:')
+    }
+
+    stages {
+        stage('ENV-Var') {
+            steps {
+                echo "env.myvar"
+            }
+        }
+        stage('Parameteries') {
+            steps {
+                echo "The Person name is ${params.PERSON_NAME}"
+            }
+        }
+        stage('Multiple-cmd') {
+            steps {
+                sh ''' date
+                w
+                pwd
+                '''
+            }
+        }
+        stage('Default-var') {
+            steps {
+                echo "${env.BUILD_NUMBER}"
+                echo "${env.BUILD_URL}"
+            }
+        }
+    }
+}

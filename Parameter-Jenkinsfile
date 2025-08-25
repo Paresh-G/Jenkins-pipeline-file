@@ -1,0 +1,16 @@
+pipeline {
+    agent any
+
+    parameters {       // Defining parameter in script, But it was same as console, Post defining here it will reflect on console setting parameter as well.
+        string(name: 'PERSON_NAME', defaultValue: 'Paresh', description: 'Please enter username to display' )
+
+    }
+
+    stages {
+        stage('Parameter-Base') {
+            steps {
+                echo "The user Name is: ${params.PERSON_NAME}"
+            }
+        }
+    }
+}
