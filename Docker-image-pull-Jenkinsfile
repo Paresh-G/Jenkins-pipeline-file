@@ -1,0 +1,27 @@
+pipeline {
+    agent {
+        label 'docker-agent'
+    }
+
+    tools {
+        jdk 'Java-17'
+    }
+
+    parameters {
+        string(name: 'ImageName', defaultValue: 'paresh3292/pythonflask', description: 'Please enter the image name prifix with registory reponame if any')
+        string(name: 'Imagetag', defaultValue: 'red-bg', description: 'Please enter image tag')
+    }
+
+    stages {
+        stage('Pulling-image') {
+            steps {
+                sh "docker image pull ${env.ImageName}:${env.Imagetag}"
+            }
+        }
+        stage('Verifying-image') {
+            steps {
+                sh "docker images"
+            }
+        }
+    }
+}
