@@ -1,0 +1,28 @@
+pipeline {
+    agent {
+        label 'docker-agent'
+    }
+
+    tools {
+        jdk 'Java-17'
+    }
+
+    stages {
+        stage('pulling-image') {
+            steps {
+                sh 'docker image pull paresh3292/pythonflask:red-bg'
+            }
+        }
+        stage('verifying-image') {
+            steps {
+                sh 'docker image ls'
+                sh 'docker container ls -a'
+            }
+        }
+        stage('creating container from image') {
+            steps {
+                sh 'docker container run --name webapp -dit -p 4000:8080 paresh3292/pythonflask:red-bg'
+            }
+        }
+    }
+}
