@@ -1,0 +1,25 @@
+#free style job for rollback
+
+# Optional: stop previous run if running
+pkill -f *.jar || true
+
+cd /opt/app/
+
+temp=$(aws s3 ls s3://sayli-paresh/ | awk '{print $2}'|sort -t "-" -nk2|tail -2 |head -1)
+echo "Latest build: $temp"
+
+aws s3 cp s3://sayli-paresh/$temp /opt/app/target/ --recursive
+
+# Run JAR in background
+nohup java -jar /opt/app/target/*.jar > /opt/app/app.log 2>&1 &
+
+##################################################################
+
+same deployment and build job shell script
+
+# Optional: stop previous run if running
+pkill -f *.jar || true
+
+
+# Run JAR in background
+nohup java -jar /opt/app/target/*.jar > /opt/app/app.log 2>&1 &
